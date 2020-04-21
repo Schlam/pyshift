@@ -40,5 +40,3 @@ def get_data(docs):
 
 
 ```
-
-#### Coming soon: comparing progrsm run time across varting thread counts 
