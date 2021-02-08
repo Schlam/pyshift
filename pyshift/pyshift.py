@@ -1,20 +1,5 @@
-'''
-Author: Sam Bellenchia
-Last Revised: 03/18/20
-
-~~~
-This tool relies heavily on the Pushshift API and vaderSentiment analysis tools
-
-API documentation found here: 
-github.com/pushshift/api
-
-Original code was based on a repo found here:
-github.com/ckw017/pushshift-nlp
-
-Sentiment analyser found here:
-github.com/vaderSentiment
-
-'''
+# Author: Sam Bellenchia
+# Last Revised: 02/07/21
 import requests
 import time
 
@@ -128,5 +113,5 @@ class PyShift:
       after = f"{int(after[:-1])-step}{unit}"
       before = f"{int(before[:-1])-step}{unit}"
       time.sleep(1)
-      
+
     return results
