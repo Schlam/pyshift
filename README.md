@@ -14,8 +14,8 @@
 
 ```
 
-**This package** is a python wrapper for the [pushshift](https://pushshift.io) api,
-a fast and free source for data from social media like Reddit and Twitter.
+**This package** is a python wrapper for the [pushshift](https://pushshift.io)
+api, a fast and free source of social media data.
 
 ### The possibilities are endless
 
