@@ -1,4 +1,4 @@
-# 
+## Collect data in seconds using PyShift
 
 ```python
 
@@ -14,7 +14,15 @@
 
 ```
 
-## Load Reddit data in seconds using PyShift
+**This package** is a python wrapper for the [pushshift](https://pushshift.io) api,
+a fast, free source for data from social media like Reddit and Twitter.
+
+### The possibilities are endless
+
+- Monitor brands, keywords, and public sentiment in real time
+
+- Gather large quantities of text from specific forums like *r/WallStreetBets*
+
+- Create Time Series datasets with granularity down to **the second**
 
 ![gif](/img/pyshift.gif)
-
