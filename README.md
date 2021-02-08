@@ -1,42 +1,29 @@
-# pyshift
-## an optimized wrapper for pushshift API
+## Collect data in seconds using PyShift
 
-Using the undocumented multithreading method found in multithreading.pool, this wrapper can parallelize your http requests across as many threads your machine can handle. The interface is the same as ```multiprocessing```'s ```Pool``` method, but splits the job across threads which share global resources unlike ```Pool``` which creates seperate processes in their own memory space.
+```python
 
-### How it works:
-```
-from multiprocessing.pool import ThreadPool
-import requests
-
-
-def get_docs(url):
-    """
-    Retrieve data using get request, left unparallelized as to go easy on the server
-    """
-    try:
-        docs = requests.get(url).json()['data']
-        return docs
-
-    except ValueError:
-        return "ValueError"
-    
-def get_attributes(doc):
-    """
-    Index document for desired data features
-    """
-    features=("created_utc","selftext", "title", "score")
-    
-    with ThreadPool(thread) as p:
-        results = p.map(lambda x: doc[x],features)
-        return results
-    
-def get_data(docs):
-    """
-    Map each document to the attribute function
-    """
-    with ThreadPool(threads) as p:
-        results = p.map(get_attributes, docs)
-        return results
-
+ ____                ____        __                   ___   __
+/\  _`\             /\  _`\     /\ \         __     /'___\ /\ \__
+\ \ \L\ \ __  __    \ \,\L\_\   \ \ \___    /\_\   /\ \__/ \ \ ,_\  
+ \ \ ,__//\ \/\ \    \/_\__ \    \ \  _ `\  \/\ \  \ \ ,__\ \ \ \/  
+  \ \ \/ \ \ \_\ \     /\ \L\ \   \ \ \ \ \  \ \ \  \ \ \_/  \ \ \_
+   \ \_\  \/`____ \    \ `\____\   \ \_\ \_\  \ \_\  \ \_\    \ \__\
+    \/_/   `/___/> \    \/_____/    \/_/\/_/   \/_/   \/_/     \/__/
+              /\___/
+              \/__/
 
 ```
+
+**This package** is a python wrapper for the [pushshift](https://pushshift.io)
+api, a fast and free source of social media data.
+
+
+### The possibilities are endless
+
+- Monitor brands, keywords, and public sentiment in real time
+
+- Gather large quantities of text from specific forums like *r/WallStreetBets*
+
+- Create Time Series datasets with granularity down to **the second**
+
+![gif](/img/pyshift.gif)
