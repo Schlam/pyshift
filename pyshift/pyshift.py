@@ -26,7 +26,8 @@ class PyShift():
 		self.client = MongoClient(self.URI) # Client for interacting with mongoDB
 		self.params = {'q':'bitcoin', 'sort_type':'score', 'size':'500'} # Query parameters
 		self.db_name = 'bitcoin' # Database name
-		self.today = dt.datetime.today() # Today's datetime object
+		self.today = dt.datetime.today().date() # Today's datetime object
+		self.collection_name = f'{self.today}' # Name for db collection
 		self.now = dt.datetime.now() # Time script was run
 		self.start = 7 # Start of time series
 		self.stop = 0 # End of time series
@@ -39,6 +40,8 @@ class PyShift():
 				raise KeyError(k)
 
 	def get_collection_name(self, start, stop):
+		now = self.now
+		unit = self.unit
 		diff = lambda t: {"m": dt.timedelta(minutes=t),
 						  "s": dt.timedelta(seconds=t),
 						  "h": dt.timedelta(hours=t),
@@ -50,10 +53,11 @@ class PyShift():
 		return collection_name
 
 	def load_data(self, data):
-		db = self.client[self.db_name]
-		collection_name = get_collection_name(self.start, self.stop)
-		db[collection_name].insert_many(data)
-		print(f"Wrote {len(data)} items to {self.db_name}.{collection_name}")
+		db_name = self.db_name
+		col_name = self.get_collection_name(self.start, self.stop)
+		print(f"Writing to {db_name}.{col_name}...")
+		self.client[db_name][col_name].insert_many(data)
+		print(f"Wrote {len(data)} items to {db_name}.{col_name}")
 
 	def get_time_series(self, **kwargs):
 		for k, v in kwargs.items():
@@ -66,17 +70,18 @@ class PyShift():
 		unit = self.unit
 		after = f"{start}{unit}"
 		before = f"{int(start) - int(step)}{unit}"
+		collection = self.get_collection_name(start, stop)
 		while before != f"{stop}{unit}":
 			params.update({'after': after, 'before': before})
 			r = requests.get(self.URL, params)
 			try:
 				data = r.json()['data']
-				load_data(data)
-			except:
-				db_name = self.db_name
-				collection_name = self.collection_name
-				message = "Failed writing data to {db_name}.{collection_name}"
-				print(message)
-			after = f"{int(after[:-1])-step}{unit}"
-			before = f"{int(before[:-1])-step}{unit}"
+				self.load_data(data)
+			except Exception as e:
+				
+				print(f"Failed writing to {self.db_name}.{collection}")
+				print(f"{type(e)}: {e}")
+
+			after = f"{int(after[:-1]) - int(step)}{unit}"
+			before = f"{int(before[:-1]) - int(step)}{unit}"
 			time.sleep(1)
